@@ -5,6 +5,7 @@
  */
 package abd.p1.view;
 
+import abd.p1.model.Genero;
 import abd.p1.model.Usuario;
 import com.toedter.calendar.JDateChooser;
 import java.io.File;
@@ -30,8 +31,10 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
      */
     private Usuario user;
     private String cambiaNombre;
+    private Date cambiaFecha;
     private File cambiaAvatar;
-    private String cambiaSexo;
+    private Genero cambiaGenero;
+    private Genero cambiaPreferencia;    
     private DefaultListModel listaModel = new DefaultListModel();
     private List<String> aficiones = new ArrayList<String>();
     public ModificarPerfilUsuario(boolean editar, Usuario user) {
@@ -254,6 +257,11 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         });
 
         ButtonCancelar.setText("Cancelar");
+        ButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -327,12 +335,18 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
        JPanel cambiarPreferencia = new JPanel();
        JButton aceptar = new JButton("Aceptar");
        JCheckBox masculino = new JCheckBox("Masculino");
-       JCheckBox femenino = new JCheckBox("Femenino");
+       JCheckBox femenino = new JCheckBox("Femenino");       
        cambiarPreferencia.add(masculino);
        cambiarPreferencia.add(femenino);
        cambiarPreferencia.add(aceptar);
        frame.add(cambiarPreferencia);
        frame.setVisible(true);
+       if(masculino.isSelected())
+           cambiaGenero = Genero.HOMBRE;
+       else if (femenino.isSelected())
+           cambiaGenero = Genero.MUJER;
+       else
+           cambiaGenero = Genero.AMBOS;
     }//GEN-LAST:event_ButtonCambiarSexoActionPerformed
 
     private void ButtonCambiarFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarFechaNacimientoActionPerformed
@@ -348,8 +362,8 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Date date = fecha.getDate();
-                System.out.println(date);
+                cambiaFecha = fecha.getDate();
+                System.out.println(cambiaFecha);
                 frame.setVisible(false);
             }
         });
@@ -371,13 +385,34 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
        cambiarPreferencia.add(aceptar);
        frame.add(cambiarPreferencia);
        frame.setVisible(true);
+       
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {       
+                if(hombres.isSelected())
+                    cambiaPreferencia = Genero.HOMBRE;
+                else if (mujeres.isSelected())
+                    cambiaPreferencia = Genero.MUJER;
+                else
+                    cambiaPreferencia = Genero.AMBOS;
+
+                 System.out.println(cambiaPreferencia);
+                 frame.setVisible(false);
+            }
+        });
+
               
     }//GEN-LAST:event_ButtonCambiarPreferenciaActionPerformed
 
     private void ButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGuardarCambiosActionPerformed
         // Los cambios no se realizan en la bd hasta que llegue aquí
         
-        
+        user.setNombre(cambiaNombre);
+        user.setFecha_nac(cambiaFecha);
+        //user.setFoto(cambiaAvatar.);
+        user.setGenero(cambiaGenero);
+        user.setBusca(cambiaPreferencia);
+
         
         
     }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
@@ -409,6 +444,20 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         ListaAficiones.setModel(listaModel);
         System.out.println(nuevaAficion);        
     }//GEN-LAST:event_ButtonEditarAficionActionPerformed
+
+    private void ButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        /* Si se pulsa este boton, la lista de aficiones se vacia y
+        se dejan los labels por defecto
+        */
+        // borra las aficiones que antes estaban
+        listaModel.removeAllElements();
+        ListaAficiones.removeAll();
+        // borra el area de texto
+        textAreaDescripcion.setText(null);
+        
+      // this.setVisible(false);
+    }//GEN-LAST:event_ButtonCancelarActionPerformed
 
     /**
      * @param args the command line arguments
