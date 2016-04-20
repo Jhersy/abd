@@ -10,7 +10,6 @@ import com.toedter.calendar.JDateChooser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -124,8 +123,18 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         });
 
         ButtonEliminarAficion.setText("Eliminar seleccionada");
+        ButtonEliminarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEliminarAficionActionPerformed(evt);
+            }
+        });
 
         ButtonEditarAficion.setText("Editar seleccionada");
+        ButtonEditarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEditarAficionActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Sexo: ");
 
@@ -383,6 +392,23 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         System.out.println(nuevaAficion);
         
     }//GEN-LAST:event_ButtonAddAficionActionPerformed
+
+    private void ButtonEliminarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEliminarAficionActionPerformed
+       // Borra la aficion que se selecciona
+       listaModel.remove(ListaAficiones.getSelectedIndex());       
+    }//GEN-LAST:event_ButtonEliminarAficionActionPerformed
+
+    private void ButtonEditarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEditarAficionActionPerformed
+        JFrame addAficion = new JFrame("Editar afición");
+        String nuevaAficion = JOptionPane.showInputDialog(addAficion, "Editar esta afición: ");
+        int index = ListaAficiones.getSelectedIndex();
+        System.out.println("Vas a cambiar en la pos " + index);
+        listaModel.remove(index); 
+        aficiones.add(index, nuevaAficion);
+        listaModel.add(index, nuevaAficion);
+        ListaAficiones.setModel(listaModel);
+        System.out.println(nuevaAficion);        
+    }//GEN-LAST:event_ButtonEditarAficionActionPerformed
 
     /**
      * @param args the command line arguments
