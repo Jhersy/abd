@@ -5,6 +5,7 @@
  */
 package abd.p1.view;
 
+import abd.p1.controller.Controlador;
 import abd.p1.model.Genero;
 import abd.p1.model.Usuario;
 import com.toedter.calendar.JDateChooser;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -29,16 +31,20 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
     /**
      * Creates new form PerfilUsuario
      */
+   
+    private Controlador ctrl;
     private Usuario user;
     private String cambiaNombre;
     private Date cambiaFecha;
-    private File cambiaAvatar;
+    private byte[] cambiaAvatar;
     private Genero cambiaGenero;
     private Genero cambiaPreferencia;    
     private DefaultListModel listaModel = new DefaultListModel();
     private List<String> aficiones = new ArrayList<String>();
-    public ModificarPerfilUsuario(boolean editar, Usuario user) {
+    
+    public ModificarPerfilUsuario(Controlador ctrl, boolean editar, Usuario user) {
         initComponents();
+        this.ctrl = ctrl;
         this.user = user;
     }
 
@@ -311,7 +317,7 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         JFileChooser avatar = new JFileChooser();
         avatar.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.JPG", "jpg");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
         avatar.setFileFilter(filtro);
         panel.add(avatar);
         JButton aceptar = new JButton("Aceptar");
@@ -321,8 +327,8 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cambiaAvatar = avatar.getSelectedFile();
-                System.out.println(cambiaAvatar);
+                ImageIcon cambiaImagen = new ImageIcon(avatar.getSelectedFile().toString());
+                // falta pasar a array de bytes
                 frame.setVisible(false);
             }
         });
@@ -371,7 +377,6 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
 
     private void ButtonCambiarPreferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarPreferenciaActionPerformed
         // TODO add your handling code here:
-        // tiene que ser solo dos o tres opciones opciones
        JFrame frame = new JFrame("Editar preferencia");
        frame.setBounds(500, 60, 350, 80);
        JPanel cambiarPreferencia = new JPanel();
@@ -412,9 +417,13 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         //user.setFoto(cambiaAvatar.);
         user.setGenero(cambiaGenero);
         user.setBusca(cambiaPreferencia);
-
-        
-        
+        user.setAficiones(aficiones);
+        user.setDescripcion(textAreaDescripcion.getText());
+        user.setAmigo(null);
+        user.setCompleta(null);
+        user.setRecibidos(null);
+        user.setEnviados(null);
+      
     }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
 
     private void ButtonAddAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddAficionActionPerformed
@@ -486,12 +495,13 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        Controlador ctrl = new Controlador(null);
         Usuario user = new Usuario();
         boolean mostrar = true;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarPerfilUsuario(mostrar, user).setVisible(true);
+                new ModificarPerfilUsuario(ctrl, mostrar, user).setVisible(true);
             }
         });
     }
