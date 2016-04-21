@@ -31,4 +31,14 @@ public class UsuarioDAO {
             return false;
         else return true;
     }
+    
+    public void insertarUsuario(Usuario user){        
+        String sql = "INSERT INTO usuarios ( correo , contraseña , genero , busca , fecha_nac , "
+                + "foto , descripcion , aficiones, amigos , completa , recibidos , enviados )"
+                + " VALUES (" + user.getCorreo() + user.getContrasena() + user.getGenero()+
+                user.getBusca() + user.getFecha_nac() + user.getFoto() + user.getDescripcion()
+                + user.getAficiones() + user.getAmigos() + user.getCompleta() + user.getRecibidos()
+                + user.getEnviados() + " )";
+    }
+    
 }
