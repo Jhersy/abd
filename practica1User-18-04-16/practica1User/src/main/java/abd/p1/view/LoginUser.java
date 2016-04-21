@@ -6,7 +6,7 @@
 package abd.p1.view;
 
 import abd.p1.controller.Controlador;
-import org.hibernate.SessionFactory;
+import abd.p1.model.Usuario;
 
 /**
  *
@@ -16,13 +16,15 @@ public class LoginUser extends javax.swing.JFrame {
     private String correo;
     private String password;
     private Controlador ctrl;
+    private Usuario user;
+    
     /**
      * Creates new form LoginUser
      */
-    public LoginUser(Controlador ctrl) {
-        this.ctrl = ctrl;
+    public LoginUser(Controlador ctrl, Usuario user) {
         initComponents();
-        
+        this.ctrl = ctrl;
+        this.user = user;        
     }
 
     /**
@@ -119,7 +121,9 @@ public class LoginUser extends javax.swing.JFrame {
     private void ButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAceptarActionPerformed
         // TODO add your handling code here:
         System.out.println("has dado a aceptar " +dirCorreo.getText() + " "+ pass.getText());
-        ctrl.busquedaUsuario(dirCorreo.getText(), pass.getText());
+        user.setCorreo(dirCorreo.getText());
+        user.setContrasena(pass.getText());
+        ctrl.busquedaUsuario(user);
     }//GEN-LAST:event_ButtonAceptarActionPerformed
 
     private void dirCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dirCorreoActionPerformed
@@ -131,7 +135,7 @@ public class LoginUser extends javax.swing.JFrame {
     }//GEN-LAST:event_passActionPerformed
 
     private void ButtonNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonNuevoUsuarioActionPerformed
-        ctrl.nuevoUsuario();
+        ctrl.nuevoUsuario(user);
     }//GEN-LAST:event_ButtonNuevoUsuarioActionPerformed
 
     /**
@@ -162,10 +166,11 @@ public class LoginUser extends javax.swing.JFrame {
         //</editor-fold>
 
         Controlador ctrl = new Controlador(null);
+        Usuario user = new Usuario();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginUser(ctrl).setVisible(true);
+                new LoginUser(ctrl, user).setVisible(true);
             }
         });
     }
